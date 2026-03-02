@@ -12,6 +12,7 @@ const app = express();
 // serve frontend static files
 app.use(express.static(path.join(__dirname, "..", "public")));
 app.use(express.json());
+
 app.set("view engine", "ejs");
 
 // Carpeta de vistas (ajusta según tu estructura)

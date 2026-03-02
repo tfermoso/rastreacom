@@ -7,7 +7,7 @@ const router = express.Router();
 
 // REGISTER
 router.get("/register", async (req, res) => {
-    res.send("Formulario de registro");
+    res.render("register");
 });
 router.post("/register", async (req, res) => {
     res.send("Registro de usuario");
@@ -16,7 +16,7 @@ router.post("/register", async (req, res) => {
 
 // LOGIN
 router.get("/login", async (req, res) => {
-    res.send("Formulario de login");
+   res.render("login");
 });
 
 router.post("/login", async (req, res) => {
