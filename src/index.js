@@ -3,9 +3,8 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
-import session from "express-session";
-import MongoStore from "connect-mongo";
-
+const session = require("express-session");
+const MongoStore = require("connect-mongo").default;
 const authRoutes = require("./routes/auth.routes");
 
 
@@ -21,12 +20,12 @@ app.use(
     store: MongoStore.create({
       mongoUrl: process.env.MONGODB_URI,
       collectionName: "sessions",
-      ttl: 60 * 60 * 24, // 1 día
+      ttl: 60 * 60 * 24,
     }),
     cookie: {
       httpOnly: true,
       sameSite: "lax",
-      secure: process.env.NODE_ENV === "production", // en prod con HTTPS
+      secure: process.env.NODE_ENV === "production",
       maxAge: 1000 * 60 * 60 * 24,
     },
   })
