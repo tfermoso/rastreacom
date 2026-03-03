@@ -59,7 +59,7 @@ app.use((req, res) => {
   }
 
   // si está logueado puedes redirigir a dashboard o mostrar 404
-  return res.status(404).render("404"); // o: res.redirect("/user/dashboard")
+  return res.render("index", { user: req.session.user });
 });
 
 app.listen(3000);
