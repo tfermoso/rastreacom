@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analizar URL</title>
+
+  <style>
+    nav { display:flex; gap:12px; align-items:center; margin-bottom:16px; }
+    form { display:flex; gap:8px; align-items:center; margin-bottom:12px; }
+    input { padding:8px; }
+    button { padding:8px 12px; cursor:pointer; }
+    button[disabled] { opacity:.6; cursor:not-allowed; }
+
+    .status { display:flex; align-items:center; gap:10px; margin:10px 0; min-height:24px; }
+    .spinner {
+      width:18px; height:18px;
+      border:3px solid rgba(0,0,0,.2);
+      border-top-color: rgba(0,0,0,.8);
+      border-radius:50%;
+      animation: spin 0.8s linear infinite;
+      display:none;
+    }
+    .loading .spinner { display:inline-block; }
+    .loading .status-text { opacity:.85; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    pre { background:#f5f5f5; padding:12px; overflow:auto; }
+    .error { color: #b00020; }
+  </style>
+</head>
+
+<body>
+  <nav>
+    <span>Bienvenido, <strong><%= user?.nombre || user?.name || user?.email || "usuario" %></strong></span>
+    <a href="/user/dashboard">Dashboard</a>
+    <a href="/auth/logout">Logout</a>
+  </nav>
+
+  <form id="f" autocomplete="off">
+    <input id="url" name="url" placeholder="https://..." style="width:420px" required />
+    <button id="btn" type="submit">Analizar</button>
+  </form>
+
+  <div id="status" class="status">
+    <span class="spinner" aria-hidden="true"></span>
+    <span class="status-text" id="statusText"></span>
+  </div>
+
+  <pre id="out"></pre>
+
+  <script>
+    const f = document.getElementById("f");
+    const out = document.getElementById("out");
+    const status = document.getElementById("status");
+    const statusText = document.getElementById("statusText");
+    const btn = document.getElementById("btn");
+
+    function setLoading(isLoading, message = "") {
+      status.classList.toggle("loading", isLoading);
+      statusText.textContent = message;
+      btn.disabled = isLoading;
+    }
+
+    f.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const url = new FormData(f).get("url");
+      out.textContent = "";
+      out.classList.remove("error");
+
+      setLoading(true, "Analizando...");
+
+      try {
+        // IMPORTANTE: usa la ruta correcta de tu backend
+        const r = await fetch("/user/analyze", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url })
+        });
+
+        const data = await r.json().catch(() => ({}));
+
+        if (!r.ok) {
+          out.classList.add("error");
+          out.textContent = JSON.stringify(data, null, 2) || "Error al analizar";
+          setLoading(false, "Hubo un error.");
+          return;
+        }
+
+        out.textContent = JSON.stringify(data, null, 2);
+        setLoading(false, "Listo ✅");
+      } catch (err) {
+        out.classList.add("error");
+        out.textContent = "Error de red o servidor: " + (err?.message || err);
+        setLoading(false, "Error de red.");
+      }
+    });
+  </script>
+</body>
+</html>
