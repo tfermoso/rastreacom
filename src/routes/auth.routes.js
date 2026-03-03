@@ -12,7 +12,7 @@ router.get("/logout", (req, res) => {
         res.clearCookie("sid"); // el mismo name que pusiste en express-session
         return res.redirect("/auth/login");
     });
-);
+});
 
 // REGISTER
 router.get("/register", async (req, res) => {
