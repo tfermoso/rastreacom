@@ -51,15 +51,19 @@ app.use("/auth", authRoutes);
 // rutas protegidas del usuario
 app.use("/user", userRoutes);
 
+app.get("/", (req, res) => {
+    return res.render("index");
+  });   
+
 
 // 404 handler (siempre al final, después de app.use(...) de rutas)
 app.use((req, res) => {
   if (!req.session || !req.session.user) {
-    return res.redirect("/auth/login");
+    return res.redirect("/user/dashboard");
   }
 
   // si está logueado puedes redirigir a dashboard o mostrar 404
-  return res.render("index", { user: req.session.user });
+  return res.redirect("/");
 });
 
 app.listen(3000);
