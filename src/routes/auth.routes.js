@@ -5,6 +5,14 @@ const User = require("../models/User");
 
 const router = express.Router();
 
+router.get("/logout", (req, res) => {
+    // GET /auth/logout (o POST)
+    req.session.destroy((err) => {
+        if (err) return res.status(500).render("error", { message: "No se pudo cerrar sesión" });
+        res.clearCookie("sid"); // el mismo name que pusiste en express-session
+        return res.redirect("/auth/login");
+    });
+);
 
 // REGISTER
 router.get("/register", async (req, res) => {
@@ -18,7 +26,7 @@ router.post("/register", async (req, res) => {
     //Validamos que no falte ningún campo
     if (!nombre || !email || !password) {
         return res.render("register", { error: "Todos los campos son obligatorios" });
-        
+
     }
     //Validamos que el email no esté registrado
     const existingUser = await User.findOne({ email });
@@ -48,7 +56,7 @@ router.post("/register", async (req, res) => {
 
 // LOGIN
 router.get("/login", async (req, res) => {
-   res.render("login");
+    res.render("login");
 });
 
 router.post("/login", async (req, res) => {
@@ -64,7 +72,7 @@ router.post("/login", async (req, res) => {
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
         return res.render("login", { error: "Contraseña incorrecta" });
-    }else {
+    } else {
         //Guardamos el usuario en la sesión (si usas sesiones)
         req.session.user = user;
         res.redirect("/dashboard");
