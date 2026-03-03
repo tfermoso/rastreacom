@@ -47,6 +47,11 @@ mongoose.connect(process.env.MONGODB_URI)
 
 app.use("/auth", authRoutes);
 
+app.get("/dashboard", (req, res) => {
+    const user = req.session.user;
+    res.render("dashboard", { user });
+}); 
+
 
 
 
