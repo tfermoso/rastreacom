@@ -6,7 +6,7 @@ const path = require("path");
 const session = require("express-session");
 const MongoStore = require("connect-mongo").default;
 const authRoutes = require("./routes/auth.routes");
-
+const userRoutes = require("./routes/user.routes");
 
 const app = express();
 //Crear variable de session
@@ -45,14 +45,21 @@ console.log("URI de MongoDB:", process.env.MONGODB_URI);
 mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log("Mongo conectado"));
 
+
 app.use("/auth", authRoutes);
 
-app.get("/dashboard", (req, res) => {
-    const user = req.session.user;
-    res.render("dashboard", { user });
-}); 
+// rutas protegidas del usuario
+app.use("/user", userRoutes);
 
 
+// 404 handler (siempre al final, después de app.use(...) de rutas)
+app.use((req, res) => {
+  if (!req.session || !req.session.user) {
+    return res.redirect("/auth/login");
+  }
 
+  // si está logueado puedes redirigir a dashboard o mostrar 404
+  return res.status(404).render("404"); // o: res.redirect("/user/dashboard")
+});
 
 app.listen(3000);

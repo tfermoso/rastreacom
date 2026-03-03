@@ -75,7 +75,7 @@ router.post("/login", async (req, res) => {
     } else {
         //Guardamos el usuario en la sesión (si usas sesiones)
         req.session.user = user;
-        res.redirect("/dashboard");
+        res.redirect("/user/dashboard");
     }
 
 });
