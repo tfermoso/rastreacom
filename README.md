@@ -1,4 +1,4 @@
-# RastreaFormacom
+# RastreaCom
 
 Sistema web para **analizar sitios web y extraer información de
 contacto** (emails y teléfonos) automáticamente.
@@ -107,8 +107,8 @@ Esto evita volver a rastrear la misma web innecesariamente.
 ### 1. Clonar repositorio
 
 ``` bash
-git clone https://github.com/tuusuario/rastreaformacom.git
-cd rastreaformacom
+git clone https://github.com/tuusuario/RastreaCom.git
+cd RastreaCom
 ```
 
 ### 2. Instalar dependencias
@@ -122,7 +122,7 @@ npm install
 Crear archivo `.env`
 
     PORT=3000
-    MONGO_URI=mongodb://localhost:27017/rastreaformacom
+    MONGO_URI=mongodb://localhost:27017/RastreaCom
     SESSION_SECRET=supersecret
     ANALYSIS_CACHE_TTL_DAYS=7
 
