@@ -1,11 +1,212 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rastreador de Contacto | Emails y Teléfonos</title>
+  <meta name="description" content="Introduce una URL y extrae emails y teléfonos de contacto de una web en segundos. Rápido, simple y responsive." />
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <h1>Bienvenido al sistema de rastreo</h1>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="#top" aria-label="Ir arriba">
+        <span class="logo" aria-hidden="true"></span>
+        <span>Rastreador de Contacto</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Secciones">
+        <a href="#features">Qué hace</a>
+        <a href="#how">Cómo funciona</a>
+        <a href="#privacy">Privacidad</a>
+      </nav>
+
+      <a class="btn primary" href="/user/analyze">Probar ahora →</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="parallax" aria-hidden="true">
+        <div class="stars" data-speed="0.18"></div>
+        <div class="blob one" data-speed="0.35"></div>
+        <div class="blob two" data-speed="0.55"></div>
+      </div>
+
+      <div class="container hero-grid">
+        <div>
+          <div class="kicker"><span class="dot"></span> Extrae emails y teléfonos desde cualquier web</div>
+          <h1>Rastrea datos de contacto en segundos, con una URL.</h1>
+          <p class="sub">
+            Introduce una web y el sistema analiza páginas relevantes para encontrar
+            <b>emails</b> y <b>teléfonos</b> de contacto. Ideal para prospección, auditorías rápidas o directorios.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn primary" href="/user/analyze">Empezar análisis</a>
+            <a class="btn ghost" href="#how">Ver cómo funciona</a>
+          </div>
+        </div>
+
+        <aside class="card panel">
+          <div class="panel-title">
+            <strong>Demo rápida</strong>
+            <span class="badge">Sin instalar nada</span>
+          </div>
+
+          <div class="field">
+            <label for="demoUrl">URL a analizar</label>
+            <input id="demoUrl" type="url" placeholder="https://ejemplo.com" value="https://example.com" />
+            <p class="small">Pulsa “Probar” para ir al analizador con la URL precargada.</p>
+          </div>
+
+          <div class="panel-actions">
+            <button class="btn primary" id="tryBtn" type="button">Probar</button>
+            <button class="btn" id="copyBtn" type="button">Copiar URL</button>
+          </div>
+
+          <div class="card" style="padding:14px; background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.10);">
+            <p class="small" style="margin:0;">
+              Tip: el rastreo visita varias páginas (“contacto”, “aviso legal”, “about”…)
+              para aumentar la probabilidad de encontrar datos reales.
+            </p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="container">
+        <div class="section-title">
+          <h2>Qué hace el proyecto</h2>
+          <p>Un rastreador ligero que prioriza páginas relevantes y extrae contactos con una estrategia sencilla y efectiva.</p>
+        </div>
+
+        <div class="grid-3">
+          <div class="feature">
+            <div class="icon">⚡</div>
+            <h3>Rápido y directo</h3>
+            <p>Analiza la home y un conjunto limitado de URLs clave para obtener resultados en poco tiempo.</p>
+          </div>
+
+          <div class="feature">
+            <div class="icon">🧠</div>
+            <h3>Detección inteligente</h3>
+            <p>Busca emails y teléfonos y los unifica eliminando duplicados. Ordena y devuelve una salida limpia.</p>
+          </div>
+
+          <div class="feature">
+            <div class="icon">🧩</div>
+            <h3>Listo para integrar</h3>
+            <p>API sencilla (Express) + Mongo para caché, histórico o enriquecimiento de datos.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="how">
+      <div class="container">
+        <div class="section-title">
+          <h2>Cómo funciona</h2>
+          <p>Una pipeline simple: descarga HTML, descubre páginas relevantes, extrae contactos y hace merge de resultados.</p>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <div class="num">1</div>
+            <div>
+              <strong>Descarga HTML</strong>
+              <span>Obtiene la home (y su URL final si hay redirecciones) validando que sea <code>text/html</code>.</span>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="num">2</div>
+            <div>
+              <strong>Descubre URLs relevantes</strong>
+              <span>Encuentra páginas tipo “contacto”, “about”, “legal”… hasta un máximo configurado.</span>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="num">3</div>
+            <div>
+              <strong>Extrae emails y teléfonos</strong>
+              <span>Escanea cada página y acumula resultados en sets para evitar duplicados.</span>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="num">4</div>
+            <div>
+              <strong>Devuelve resultado limpio</strong>
+              <span>Ordena emails/teléfonos y opcionalmente devuelve <code>visited</code> para auditoría.</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="height: 18px;"></div>
+
+        <div class="cta" id="privacy">
+          <div>
+            <h3>Privacidad y buenas prácticas</h3>
+            <p>
+              El sistema se enfoca en información pública de la web. Puedes limitar el rastreo por páginas (<code>maxUrls</code>)
+              y aplicar caché en Mongo para evitar peticiones repetidas.
+            </p>
+          </div>
+          <a class="btn primary" href="/user/analyze">Ir al analizador →</a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container footer-inner">
+        <span>© <span id="year"></span> Rastreador de Contacto</span>
+        <span>Hecho con Node + Express · Responsive · Parallax suave</span>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // Año footer
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Botones demo
+    const demoUrl = document.getElementById("demoUrl");
+    document.getElementById("tryBtn").addEventListener("click", () => {
+      const u = (demoUrl.value || "").trim();
+      if (!u) return;
+      // Si tu página de análisis acepta query param:
+      // /user/analyze?url=...
+      window.location.href = "/user/analyze?url=" + encodeURIComponent(u);
+    });
+
+    document.getElementById("copyBtn").addEventListener("click", async () => {
+      try{
+        await navigator.clipboard.writeText(demoUrl.value.trim());
+        document.getElementById("copyBtn").textContent = "Copiado ✓";
+        setTimeout(() => document.getElementById("copyBtn").textContent = "Copiar URL", 1200);
+      }catch(e){
+        alert("No se pudo copiar. Copia manualmente la URL.");
+      }
+    });
+
+    // Parallax suave (respeta reduced motion)
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!reduceMotion) {
+      const layers = document.querySelectorAll("[data-speed]");
+      const onScroll = () => {
+        const y = window.scrollY || 0;
+        layers.forEach(el => {
+          const speed = parseFloat(el.getAttribute("data-speed")) || 0.2;
+          el.style.transform = `translate3d(0, ${y * speed}px, 0)`;
+        });
+      };
+      onScroll();
+      window.addEventListener("scroll", onScroll, { passive: true });
+    }
+  </script>
 </body>
 </html>

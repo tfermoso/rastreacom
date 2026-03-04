@@ -1,52 +1,111 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
 	<title>Login - RastreaFormacom</title>
+
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-	<link rel="stylesheet" href="styles.css">
+	<link rel="stylesheet" href="/css/auth.css">
 </head>
-<body class="bg-light">
-<header>
-  <nav class="navbar navbar-light bg-light">
-    <div class="container">
-      <a class="navbar-brand" href="index.html">RastreaFormacom</a>
-    </div>
-  </nav>
-</header>
-<main class="flex-grow-1">
-	<div class="card mx-auto shadow" style="max-width:400px;">
-		<div class="card-body">
-			<h3 class="text-success mb-3">Login</h3>
 
-<div id="loginMessage" class="mb-3 text-center"></div>
-        <form id="loginForm" method="POST" action="">
-				<div class="mb-3">
-					<input type="email" name="email" class="form-control" placeholder="Email" required>
-				</div>
-				<div class="mb-3">
-					<input type="password" name="password" class="form-control" placeholder="Password" required>
-				</div>
-				<button class="btn btn-success w-100" type="submit">Entrar</button>
-			</form>
+<body>
+	<header class="nav">
+		<div class="container nav-inner">
+			<a class="brand" href="/">
+				<span class="logo" aria-hidden="true"></span>
+				<span>RastreaCom</span>
+			</a>
 
-			<p class="mt-3 text-center">
-				<a href="register.html">Crear cuenta</a>
-			</p>
+		
 
+			<a class="btn primary" href="register">Crear cuenta →</a>
 		</div>
-	</div>
-</div>
+	</header>
 
+	<main>
+		<section class="hero" style="padding: 54px 0 46px;">
+			<div class="parallax" aria-hidden="true">
+				<div class="stars" data-speed="0.18"></div>
+				<div class="blob one" data-speed="0.35"></div>
+				<div class="blob two" data-speed="0.55"></div>
+			</div>
 
-</main>
+			<div class="container">
+				<div class="row justify-content-center">
+					<div class="col-12 col-sm-10 col-md-7 col-lg-5">
 
-<footer class="text-center py-3 mt-4" style="background:#ffc0cb;">
-  <div class="container">
-    <small>&copy; 2026 RastreaFormacom. Todos los derechos reservados.</small>
-  </div>
-</footer>
+						<div class="card panel">
+							<div class="panel-title">
+								<strong>Iniciar sesión</strong>
+								<span class="badge">Acceso seguro</span>
+							</div>
 
+							<p class="small">Accede al panel para analizar URLs y consultar resultados.</p>
+
+							<div id="loginMessage" class="mb-2 text-center"></div>
+
+							<form id="loginForm" method="POST" action="">
+								<div class="field">
+									<label for="email">Email</label>
+									<input id="email" type="email" name="email" placeholder="tu@email.com" required>
+								</div>
+
+								<div class="field">
+									<label for="password">Password</label>
+									<input id="password" type="password" name="password" placeholder="••••••••"
+										required>
+								</div>
+
+								<div class="panel-actions">
+									<button class="btn primary" type="submit" style="flex:1;">Entrar</button>
+									<a class="btn ghost" href="/">Volver</a>
+								</div>
+							</form>
+
+							<div style="margin-top:12px; border-top:1px solid rgba(255,255,255,.12); padding-top:12px;">
+								<p class="small" style="text-align:center;">
+									¿No tienes cuenta? <a href="/auth/register" style="text-decoration: underline;">Crear
+										cuenta</a>
+								</p>
+							</div>
+						</div>
+
+						<div class="mt-3" style="text-align:center; color: rgba(255,255,255,.55); font-size: 13px;">
+							Protegido por sesión · Solo datos públicos
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<footer>
+			<div class="container footer-inner">
+				<span>© <span id="year"></span> RastreaFormacom</span>
+				<span>Node + Express · Responsive · Parallax suave</span>
+			</div>
+		</footer>
+	</main>
+
+	<script>
+		document.getElementById("year").textContent = new Date().getFullYear();
+
+		const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+		if (!reduceMotion) {
+			const layers = document.querySelectorAll("[data-speed]");
+			const onScroll = () => {
+				const y = window.scrollY || 0;
+				layers.forEach(el => {
+					const speed = parseFloat(el.getAttribute("data-speed")) || 0.2;
+					el.style.transform = `translate3d(0, ${y * speed}px, 0)`;
+				});
+			};
+			onScroll();
+			window.addEventListener("scroll", onScroll, { passive: true });
+		}
+	</script>
 </body>
+
 </html>

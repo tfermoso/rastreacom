@@ -1,32 +1,60 @@
 const express = require("express");
 const router = express.Router();
-const { analyzeSite } = require("../lib/analyzeSite"); // ajusta el path si está en otra carpeta
+
+const { analyzeSite } = require("../lib/analyzeSite");
 const Site = require("../models/Site");
+const User = require("../models/User"); // ✅ IMPORTANTE: ajusta el path/nombre si es distinto
 const { normalizeUrl } = require("../lib/normalizeUrl");
 
 const requireAuth = require("../middlewares/requireAuth");
 
-// Todo lo que cuelgue de este router queda protegido
 router.use(requireAuth);
 
-// Ejemplo: perfil
 router.get("/profile", (req, res) => {
-    // req.session.user lo pusiste en login
-    res.render("user/profile", { user: req.session.user });
+  res.render("user/profile", { user: req.session.user });
 });
 
-// Ejemplo: dashboard
-router.get("/dashboard", (req, res) => {
-    res.render("user/dashboard", { user: req.session.user });
+router.get("/dashboard", async (req, res) => {
+  // ✅ stats SIEMPRE definido
+  let stats = { usersCount: 0, sitesCount: 0 };
+
+  try {
+    const [usersCount, sitesCount] = await Promise.all([
+      User.countDocuments({}),
+      Site.countDocuments({}),
+    ]);
+    stats = { usersCount, sitesCount };
+  } catch (err) {
+    console.error("Error dashboard:", err);
+  }
+
+  return res.render("user/dashboard", {
+    user: req.session.user,
+    stats,
+  });
 });
 
-router.get("/analyze", (req, res) => {
-    res.render("user/analyze", { user: req.session.user });
-});
+router.get("/analyze", async (req, res) => {
+  try {
+    const recentSites = await Site.find({})
+      .sort({ lastAnalyzedAt: -1, updatedAt: -1 })
+      .limit(8)
+      .select("url name lastAnalyzedAt emails phones error")
+      .lean();
 
-
-router.get("/analyze", (req, res) => {
-  res.render("user/analyze", { user: req.session.user });
+    res.render("user/analyze", {
+      user: req.session.user,
+      recentSites,
+      prefillUrl: req.query.url || "",
+    });
+  } catch (e) {
+    console.error("Error cargando recientes:", e);
+    res.render("user/analyze", {
+      user: req.session.user,
+      recentSites: [],
+      prefillUrl: req.query.url || "",
+    });
+  }
 });
 
 router.post("/analyze", async (req, res) => {
@@ -50,27 +78,23 @@ router.post("/analyze", async (req, res) => {
     const analyzeOptions = {
       maxUrls: 8,
       defaultCountryCode: "+34",
-      includeVisited: true, // si quieres guardar visited
+      includeVisited: true,
       ...(options && typeof options === "object" ? options : {}),
     };
 
-    // permitir refresco manual desde front: options.forceRefresh=true
     const forceRefresh = Boolean(analyzeOptions.forceRefresh);
     delete analyzeOptions.forceRefresh;
 
     const normalized = normalizeUrl(url);
     const now = new Date();
 
-    // TTL lógico (sin borrar doc): 7 días por defecto
     const ttlDays = Number(process.env.ANALYSIS_CACHE_TTL_DAYS || 7);
     const newExpiresAt = new Date(now.getTime() + ttlDays * 24 * 60 * 60 * 1000);
 
-    // 1) mira cache
     if (!forceRefresh) {
       const cached = await Site.findOne({ url: normalized }).lean();
 
       if (cached && cached.expiresAt && cached.expiresAt > now) {
-        // incrementa hits (sin bloquear)
         Site.updateOne({ _id: cached._id }, { $inc: { hits: 1 } }).catch(() => {});
 
         return res.json({
@@ -82,22 +106,20 @@ router.post("/analyze", async (req, res) => {
             url: cached.url,
             emails: cached.emails || [],
             phones: cached.phones || [],
-            ...(cached.visited?.length ? { visited: cached.visited } : {}),
+            ...(cached.visited && cached.visited.length ? { visited: cached.visited } : {}),
             ...(cached.error ? { error: cached.error } : {}),
           },
         });
       }
     }
 
-    // 2) analiza
     const result = await analyzeSite(normalized, analyzeOptions);
 
-    // 3) guarda (upsert por url)
     await Site.updateOne(
       { url: normalized },
       {
         $set: {
-          url: result.url || normalized, // analyzeSite puede devolver finalUrl como baseUrl
+          url: result.url || normalized,
           name: result.name || "",
           emails: Array.isArray(result.emails) ? result.emails : [],
           phones: Array.isArray(result.phones) ? result.phones : [],
@@ -122,9 +144,5 @@ router.post("/analyze", async (req, res) => {
     return res.status(500).json({ error: "Error interno del servidor" });
   }
 });
-
-
-
-
 
 module.exports = router;
