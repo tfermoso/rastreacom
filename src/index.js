@@ -66,4 +66,8 @@ app.use((req, res) => {
   return res.redirect("/");
 });
 
-app.listen(3000);
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Servidor escuchando en http://0.0.0.0:${PORT}`);
+});

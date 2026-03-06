@@ -1,289 +1,355 @@
 /* public/css/auth.css */
 /* Solo para /auth/login y /auth/register, pero usando las MISMAS clases que tu HTML (nav/btn/hero/etc.) */
 
-:root{
+:root {
   --bg: #070A12;
-  --card: rgba(255,255,255,.06);
-  --text: rgba(255,255,255,.92);
-  --muted: rgba(255,255,255,.68);
+  --card: rgba(255, 255, 255, .06);
+  --text: rgba(255, 255, 255, .92);
+  --muted: rgba(255, 255, 255, .68);
   --accent: #7C5CFF;
   --accent2: #33D6A6;
-  --shadow: 0 18px 60px rgba(0,0,0,.45);
+  --shadow: 0 18px 60px rgba(0, 0, 0, .45);
   --radius: 18px;
   --max: 1120px;
 }
 
-*{ box-sizing: border-box; }
-html, body{ height: 100%; }
+* {
+  box-sizing: border-box;
+}
 
-body{
-  margin:0;
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
   color: var(--text);
   background:
-    radial-gradient(1200px 900px at 15% 15%, rgba(124,92,255,.18), transparent 55%),
-    radial-gradient(900px 700px at 85% 20%, rgba(51,214,166,.14), transparent 55%),
+    radial-gradient(1200px 900px at 15% 15%, rgba(124, 92, 255, .18), transparent 55%),
+    radial-gradient(900px 700px at 85% 20%, rgba(51, 214, 166, .14), transparent 55%),
     var(--bg);
   overflow-x: hidden;
 }
 
-a{ color: inherit; text-decoration: none; }
+a {
+  color: inherit;
+  text-decoration: none;
+}
 
-.container{
+.container {
   width: min(var(--max), calc(100% - 40px));
   margin: 0 auto;
 }
 
 /* NAV (landing-like) */
-.nav{
+.nav {
   position: sticky;
   top: 0;
   z-index: 50;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  background: linear-gradient(to bottom, rgba(7,10,18,.78), rgba(7,10,18,.35));
-  border-bottom: 1px solid rgba(255,255,255,.08);
+  background: linear-gradient(to bottom, rgba(7, 10, 18, .78), rgba(7, 10, 18, .35));
+  border-bottom: 1px solid rgba(255, 255, 255, .08);
 }
-.nav-inner{
-  display:flex;
-  align-items:center;
+
+.nav-inner {
+  display: flex;
+  align-items: center;
   justify-content: space-between;
   gap: 16px;
   padding: 14px 0;
 }
-.brand{
-  display:flex;
-  align-items:center;
+
+.brand {
+  display: flex;
+  align-items: center;
   gap: 10px;
   font-weight: 800;
   letter-spacing: .2px;
 }
-.logo{
-  width: 34px; height: 34px;
+
+.logo {
+  width: 34px;
+  height: 34px;
   border-radius: 12px;
   background:
-    radial-gradient(circle at 30% 30%, rgba(255,255,255,.35), transparent 45%),
+    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, .35), transparent 45%),
     linear-gradient(135deg, var(--accent), var(--accent2));
-  box-shadow: 0 12px 28px rgba(124,92,255,.22);
+  box-shadow: 0 12px 28px rgba(124, 92, 255, .22);
 }
-.nav-links{
-  display:flex;
-  align-items:center;
+
+.nav-links {
+  display: flex;
+  align-items: center;
   gap: 14px;
   color: var(--muted);
   font-size: 14px;
 }
-.nav-links a{
+
+.nav-links a {
   padding: 8px 10px;
   border-radius: 10px;
 }
-.nav-links a:hover{
-  background: rgba(255,255,255,.06);
+
+.nav-links a:hover {
+  background: rgba(255, 255, 255, .06);
   color: var(--text);
 }
 
 /* Buttons (OJO: pisa Bootstrap .btn; OK si quieres este estilo) */
-.btn{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   gap: 10px;
   padding: 12px 14px;
   border-radius: 14px;
-  border: 1px solid rgba(255,255,255,.14);
-  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255, 255, 255, .14);
+  background: rgba(255, 255, 255, .06);
   color: var(--text);
-  box-shadow: 0 10px 26px rgba(0,0,0,.25);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, .25);
   transition: transform .12s ease, background .12s ease, border-color .12s ease;
   font-weight: 700;
   font-size: 14px;
 }
-.btn:hover{
+
+.btn:hover {
   transform: translateY(-1px);
-  background: rgba(255,255,255,.09);
-  border-color: rgba(255,255,255,.22);
+  background: rgba(255, 255, 255, .09);
+  border-color: rgba(255, 255, 255, .22);
 }
-.btn.primary{
+
+.btn.primary {
   border: none;
   background: linear-gradient(135deg, var(--accent), var(--accent2));
-  box-shadow: 0 18px 50px rgba(124,92,255,.18), 0 14px 40px rgba(51,214,166,.10);
+  box-shadow: 0 18px 50px rgba(124, 92, 255, .18), 0 14px 40px rgba(51, 214, 166, .10);
 }
-.btn.ghost{ background: rgba(255,255,255,.06); }
+
+.btn.ghost {
+  background: rgba(255, 255, 255, .06);
+}
 
 /* HERO + Parallax */
-.hero{ position: relative; padding: 62px 0 40px; }
-.parallax{
+.hero {
+  position: relative;
+  padding: 62px 0 40px;
+}
+
+.parallax {
   position: absolute;
   inset: -140px -60px auto -60px;
   height: 520px;
-  pointer-events:none;
-  overflow:hidden;
+  pointer-events: none;
+  overflow: hidden;
 }
-.blob{
-  position:absolute;
-  width: 520px; height: 520px;
+
+.blob {
+  position: absolute;
+  width: 520px;
+  height: 520px;
   border-radius: 999px;
   filter: blur(30px);
   opacity: .55;
-  transform: translate3d(0,0,0);
+  transform: translate3d(0, 0, 0);
   will-change: transform;
 }
-.blob.one{
-  left: -80px; top: 0px;
-  background: radial-gradient(circle at 35% 35%, rgba(124,92,255,.85), rgba(124,92,255,.10) 62%, transparent 70%);
+
+.blob.one {
+  left: -80px;
+  top: 0px;
+  background: radial-gradient(circle at 35% 35%, rgba(124, 92, 255, .85), rgba(124, 92, 255, .10) 62%, transparent 70%);
 }
-.blob.two{
-  right: -120px; top: 40px;
-  background: radial-gradient(circle at 35% 35%, rgba(51,214,166,.70), rgba(51,214,166,.08) 62%, transparent 70%);
+
+.blob.two {
+  right: -120px;
+  top: 40px;
+  background: radial-gradient(circle at 35% 35%, rgba(51, 214, 166, .70), rgba(51, 214, 166, .08) 62%, transparent 70%);
 }
-.stars{
-  position:absolute;
+
+.stars {
+  position: absolute;
   inset: 0;
   background-image:
-    radial-gradient(1px 1px at 12% 30%, rgba(255,255,255,.25), transparent 60%),
-    radial-gradient(1px 1px at 35% 55%, rgba(255,255,255,.18), transparent 60%),
-    radial-gradient(1px 1px at 70% 35%, rgba(255,255,255,.14), transparent 60%),
-    radial-gradient(1px 1px at 85% 60%, rgba(255,255,255,.16), transparent 60%),
-    radial-gradient(1px 1px at 55% 20%, rgba(255,255,255,.18), transparent 60%);
+    radial-gradient(1px 1px at 12% 30%, rgba(255, 255, 255, .25), transparent 60%),
+    radial-gradient(1px 1px at 35% 55%, rgba(255, 255, 255, .18), transparent 60%),
+    radial-gradient(1px 1px at 70% 35%, rgba(255, 255, 255, .14), transparent 60%),
+    radial-gradient(1px 1px at 85% 60%, rgba(255, 255, 255, .16), transparent 60%),
+    radial-gradient(1px 1px at 55% 20%, rgba(255, 255, 255, .18), transparent 60%);
   opacity: .75;
-  transform: translate3d(0,0,0);
+  transform: translate3d(0, 0, 0);
   will-change: transform;
 }
 
 /* Card/panel */
-.card{
-  border: 1px solid rgba(255,255,255,.12);
-  background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.04));
+.card {
+  border: 1px solid rgba(255, 255, 255, .12);
+  background: linear-gradient(180deg, rgba(255, 255, 255, .07), rgba(255, 255, 255, .04));
   border-radius: var(--radius);
   box-shadow: var(--shadow);
 }
-.panel{
+
+.panel {
   padding: 18px;
-  display:flex;
+  display: flex;
   flex-direction: column;
   gap: 12px;
 }
-.panel-title{
-  display:flex;
-  align-items:center;
+
+.panel-title {
+  display: flex;
+  align-items: center;
   justify-content: space-between;
   gap: 12px;
 }
-.badge{
+
+.badge {
   font-size: 12px;
-  color: rgba(255,255,255,.78);
-  border: 1px solid rgba(255,255,255,.12);
-  background: rgba(255,255,255,.05);
+  color: rgba(255, 255, 255, .78);
+  border: 1px solid rgba(255, 255, 255, .12);
+  background: rgba(255, 255, 255, .05);
   padding: 6px 10px;
   border-radius: 999px;
 }
-.small{
+
+.small {
   color: var(--muted);
   font-size: 12px;
   line-height: 1.45;
   margin: 0;
 }
-.field{ display:flex; flex-direction: column; gap: 6px; }
-label{ font-size: 12px; color: var(--muted); }
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+label {
+  font-size: 12px;
+  color: var(--muted);
+}
 
 /* Inputs */
-input[type="email"], input[type="password"], input[type="text"], input[type="number"], input[type="url"]{
+input[type="email"],
+input[type="password"],
+input[type="text"],
+input[type="number"],
+input[type="url"] {
   width: 100%;
   padding: 12px 12px;
   border-radius: 14px;
-  border: 1px solid rgba(255,255,255,.14);
-  background: rgba(0,0,0,.18);
+  border: 1px solid rgba(255, 255, 255, .14);
+  background: rgba(0, 0, 0, .18);
   color: var(--text);
   outline: none;
 }
-input::placeholder{ color: rgba(255,255,255,.35); }
 
-.panel-actions{
-  display:flex;
+input::placeholder {
+  color: rgba(255, 255, 255, .35);
+}
+
+.panel-actions {
+  display: flex;
   gap: 10px;
-  align-items:center;
+  align-items: center;
   margin-top: 6px;
 }
 
 /* Footer */
-footer{
+footer {
   padding: 26px 0 40px;
-  color: rgba(255,255,255,.55);
-  border-top: 1px solid rgba(255,255,255,.08);
+  color: rgba(255, 255, 255, .55);
+  border-top: 1px solid rgba(255, 255, 255, .08);
 }
-.footer-inner{
-  display:flex;
-  align-items:center;
+
+.footer-inner {
+  display: flex;
+  align-items: center;
   justify-content: space-between;
   gap: 12px;
   flex-wrap: wrap;
   font-size: 13px;
 }
 
-@media (max-width: 780px){
-  .nav-links{ display:none; }
+@media (max-width: 780px) {
+  .nav-links {
+    display: none;
+  }
 }
 
-@media (prefers-reduced-motion: reduce){
-  .blob, .stars{ transform: none !important; }
-  .btn{ transition: none; }
+@media (prefers-reduced-motion: reduce) {
+
+  .blob,
+  .stars {
+    transform: none !important;
+  }
+
+  .btn {
+    transition: none;
+  }
 }
 
 /* --- FIX para páginas /auth: título + inputs visibles --- */
-body.auth-page{
-  color: rgba(255,255,255,.92) !important;
+body.auth-page {
+  color: rgba(255, 255, 255, .92) !important;
 }
 
 /* Card auth (si la usas) */
-.auth-card, .auth-card .card-body{
-  color: rgba(255,255,255,.92) !important;
+.auth-card,
+.auth-card .card-body {
+  color: rgba(255, 255, 255, .92) !important;
 }
 
 /* Título y subtítulo */
-.auth-title{
-  color: rgba(255,255,255,.92) !important;
+.auth-title {
+  color: rgba(255, 255, 255, .92) !important;
 }
-.auth-sub{
-  color: rgba(255,255,255,.68) !important;
+
+.auth-sub {
+  color: rgba(255, 255, 255, .68) !important;
 }
 
 /* Labels */
-label{
-  color: rgba(255,255,255,.68) !important;
+label {
+  color: rgba(255, 255, 255, .68) !important;
 }
 
 /* Inputs auth (pisando Bootstrap form-control) */
 .auth-input.form-control,
-.auth-input{
-  background: rgba(0,0,0,.18) !important;
-  border: 1px solid rgba(255,255,255,.14) !important;
-  color: rgba(255,255,255,.92) !important;
-  -webkit-text-fill-color: rgba(255,255,255,.92) !important; /* Safari */
+.auth-input {
+  background: rgba(0, 0, 0, .18) !important;
+  border: 1px solid rgba(255, 255, 255, .14) !important;
+  color: rgba(255, 255, 255, .92) !important;
+  -webkit-text-fill-color: rgba(255, 255, 255, .92) !important;
+  /* Safari */
 }
 
-.auth-input::placeholder{
-  color: rgba(255,255,255,.35) !important;
+.auth-input::placeholder {
+  color: rgba(255, 255, 255, .35) !important;
 }
 
-.auth-input:focus{
-  border-color: rgba(124,92,255,.45) !important;
-  box-shadow: 0 0 0 .2rem rgba(124,92,255,.18) !important;
+.auth-input:focus {
+  border-color: rgba(124, 92, 255, .45) !important;
+  box-shadow: 0 0 0 .2rem rgba(124, 92, 255, .18) !important;
 }
 
 /* Botón auth */
-.auth-btn{
-  color: rgba(255,255,255,.95) !important;
+.auth-btn {
+  color: rgba(255, 255, 255, .95) !important;
 }
 
 /* Footer auth */
-.auth-footer{
-  color: rgba(255,255,255,.55) !important;
+.auth-footer {
+  color: rgba(255, 255, 255, .55) !important;
 }
+
 /* ===== FIX VISIBILIDAD (Bootstrap + dark UI) ===== */
 
 /* Texto base en páginas auth/dashboard */
-body.auth-page{
-  color: rgba(255,255,255,.92) !important;
+body.auth-page {
+  color: rgba(255, 255, 255, .92) !important;
 }
 
 /* Forzar color en títulos y textos comunes */
@@ -292,59 +358,169 @@ body.auth-page h2,
 body.auth-page h3,
 body.auth-page h4,
 body.auth-page h5,
-body.auth-page h6{
-  color: rgba(255,255,255,.92) !important;
+body.auth-page h6 {
+  color: rgba(255, 255, 255, .92) !important;
 }
 
 body.auth-page p,
 body.auth-page small,
 body.auth-page span,
-body.auth-page li{
-  color: rgba(255,255,255,.68) !important;
+body.auth-page li {
+  color: rgba(255, 255, 255, .68) !important;
 }
 
 /* Enlaces */
-body.auth-page a{
-  color: rgba(255,255,255,.85);
+body.auth-page a {
+  color: rgba(255, 255, 255, .85);
 }
-body.auth-page a:hover{
-  color: rgba(255,255,255,.95);
+
+body.auth-page a:hover {
+  color: rgba(255, 255, 255, .95);
 }
 
 /* Cards bootstrap: el texto interior suele ser negro */
 body.auth-page .card,
 body.auth-page .card-body,
-body.auth-page .card *{
-  color: rgba(255,255,255,.92);
+body.auth-page .card * {
+  color: rgba(255, 255, 255, .92);
 }
 
 /* Ajuste: si quieres que los párrafos dentro de card sean “muted” */
 body.auth-page .card p,
-body.auth-page .card .text-muted{
-  color: rgba(255,255,255,.68) !important;
+body.auth-page .card .text-muted {
+  color: rgba(255, 255, 255, .68) !important;
 }
 
 /* Inputs y placeholders (por si algún input se queda negro) */
 body.auth-page input,
 body.auth-page textarea,
-body.auth-page select{
-  color: rgba(255,255,255,.92) !important;
-  -webkit-text-fill-color: rgba(255,255,255,.92) !important;
+body.auth-page select {
+  color: rgba(255, 255, 255, .92) !important;
+  -webkit-text-fill-color: rgba(255, 255, 255, .92) !important;
 }
+
 body.auth-page input::placeholder,
-body.auth-page textarea::placeholder{
-  color: rgba(255,255,255,.35) !important;
+body.auth-page textarea::placeholder {
+  color: rgba(255, 255, 255, .35) !important;
 }
 
 /* Labels */
-body.auth-page label{
-  color: rgba(255,255,255,.68) !important;
+body.auth-page label {
+  color: rgba(255, 255, 255, .68) !important;
 }
 
 /* Tablas (si luego metes listados) */
 body.auth-page table,
 body.auth-page th,
-body.auth-page td{
-  color: rgba(255,255,255,.85) !important;
-  border-color: rgba(255,255,255,.14) !important;
+body.auth-page td {
+  color: rgba(255, 255, 255, .85) !important;
+  border-color: rgba(255, 255, 255, .14) !important;
+}
+
+
+.rc-chat-launcher {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 9999;
+  border-radius: 999px;
+  padding: 10px 14px;
+  border: 1px solid rgba(255, 255, 255, .15);
+  background: rgba(0, 0, 0, .55);
+  backdrop-filter: blur(10px);
+  color: rgba(255, 255, 255, .92);
+  cursor: pointer;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.rc-chat {
+  position: fixed;
+  right: 18px;
+  bottom: 70px;
+  width: min(420px, calc(100vw - 36px));
+  height: 520px;
+  z-index: 9999;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, .15);
+  background: rgba(0, 0, 0, .55);
+  backdrop-filter: blur(10px);
+  display: none;
+  overflow: hidden;
+}
+
+.rc-chat.open {
+  display: flex;
+  flex-direction: column;
+}
+
+.rc-chat-header {
+  padding: 10px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, .12);
+  color: rgba(255, 255, 255, .92);
+}
+
+.rc-chat-body {
+  padding: 10px 12px;
+  flex: 1;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rc-msg {
+  max-width: 85%;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, .10);
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.rc-msg.user {
+  align-self: flex-end;
+  background: rgba(255, 255, 255, .08);
+}
+
+.rc-msg.ai {
+  align-self: flex-start;
+  background: rgba(255, 255, 255, .04);
+}
+
+.rc-chat-footer {
+  padding: 10px 12px;
+  display: flex;
+  gap: 10px;
+  border-top: 1px solid rgba(255, 255, 255, .12);
+}
+
+.rc-chat-footer input {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, .14);
+  background: rgba(0, 0, 0, .25);
+  color: rgba(255, 255, 255, .92);
+  outline: none;
+}
+
+.rc-chat-footer button {
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, .14);
+  background: rgba(255, 255, 255, .08);
+  color: rgba(255, 255, 255, .92);
+  cursor: pointer;
+}
+
+.rc-chat-footer button[disabled] {
+  opacity: .6;
+  cursor: not-allowed;
 }

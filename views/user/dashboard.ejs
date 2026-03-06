@@ -21,10 +21,10 @@
             <div class="nav-links">
                 <a href="/user/dashboard">Dashboard</a>
                 <a href="/user/analyze">Analizar</a>
-  
+
             </div>
 
-            <form method="POST" action="/logout" style="margin:0;">
+            <form method="get" action="/auth/logout" style="margin:0;">
                 <button class="btn ghost" type="submit">Salir</button>
             </form>
         </div>
@@ -154,6 +154,101 @@
             window.addEventListener("scroll", onScroll, { passive: true });
         }
     </script>
+    <div class="rc-chat" id="rcChat">
+        <div class="rc-chat-header">
+            <div><b>Asistente</b> <span style="opacity:.7; font-size:12px;">RastreaCom</span></div>
+            <div style="display:flex; gap:8px; align-items:center;">
+                <button class="btn btn-sm btn-outline-light" id="rcChatClear" type="button">Limpiar</button>
+                <button class="btn btn-sm btn-outline-light" id="rcChatClose" type="button">Cerrar</button>
+            </div>
+        </div>
+
+        <div class="rc-chat-body" id="rcChatBody">
+            <div class="rc-msg ai">Hola 👋 ¿En qué te ayudo con RastreaCom?</div>
+        </div>
+
+        <div class="rc-chat-footer">
+            <input id="rcChatInput" type="text" placeholder="Escribe tu pregunta…" />
+            <button id="rcChatSend" type="button">Enviar</button>
+        </div>
+    </div>
+
+    <div class="rc-chat-launcher" id="rcChatLauncher">
+        💬 <span>Chat</span>
+    </div>
+    <script>
+  // Contexto dinámico: se actualizará tras cada análisis
+  window.__RC_CHAT_CONTEXT__ = {
+    page: "analyze",
+    lastAnalysis: null
+  };
+
+  // Hook: cuando tu analyze hace fetch y recibe `data`, guarda contexto
+  // Inserta esta línea dentro de tu handler submit, justo después de `const data = ...`
+  // window.__RC_CHAT_CONTEXT__.lastAnalysis = data;
+
+  (function initRastreaChat(){
+    const chat = document.getElementById("rcChat");
+    const launcher = document.getElementById("rcChatLauncher");
+    const closeBtn = document.getElementById("rcChatClose");
+    const clearBtn = document.getElementById("rcChatClear");
+    const body = document.getElementById("rcChatBody");
+    const input = document.getElementById("rcChatInput");
+    const send = document.getElementById("rcChatSend");
+
+    function addMsg(role, text){
+      const div = document.createElement("div");
+      div.className = "rc-msg " + (role === "user" ? "user" : "ai");
+      div.textContent = text;
+      body.appendChild(div);
+      body.scrollTop = body.scrollHeight;
+    }
+
+    function setOpen(open){
+      chat.classList.toggle("open", open);
+    }
+
+    launcher.addEventListener("click", () => setOpen(!chat.classList.contains("open")));
+    closeBtn.addEventListener("click", () => setOpen(false));
+    clearBtn.addEventListener("click", () => {
+      body.innerHTML = '<div class="rc-msg ai">Hola 👋 ¿En qué te ayudo con RastreaCom?</div>';
+    });
+
+    async function sendMsg(){
+      const msg = input.value.trim();
+      if (!msg) return;
+
+      addMsg("user", msg);
+      input.value = "";
+      send.disabled = true;
+
+      const context = window.__RC_CHAT_CONTEXT__ || { page: "analyze", lastAnalysis: null };
+
+      try{
+        const r = await fetch("/user/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: msg, context })
+        });
+
+        const data = await r.json().catch(() => ({}));
+        if (!r.ok) throw new Error(data.error || "Error en chat");
+
+        addMsg("ai", data.answer || "—");
+      }catch(e){
+        addMsg("ai", "⚠️ " + (e && e.message ? e.message : String(e)));
+      }finally{
+        send.disabled = false;
+        input.focus();
+      }
+    }
+
+    send.addEventListener("click", sendMsg);
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") sendMsg();
+    });
+  })();
+</script>
 </body>
 
 </html>

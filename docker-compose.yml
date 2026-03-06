@@ -12,8 +12,7 @@
       - .env
     depends_on:
       - mongo
-    command: node --inspect=0.0.0.0:9229 --watch src/index.js
-
+    command: node --inspect-brk=0.0.0.0:9229 --watch src/index.js
   mongo:
     image: mongo:7
     container_name: mongo_rastreacom

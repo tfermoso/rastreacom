@@ -9,23 +9,17 @@
   <link rel="stylesheet" href="/css/auth.css">
 
   <style>
-    /* pequeños ajustes específicos de esta pantalla */
+    /* Layout */
     .layout{
       display:grid;
       grid-template-columns: 1fr 360px;
-      gap: 14px;
-      align-items: start;
+      gap:14px;
+      align-items:start;
     }
-    @media (max-width: 980px){
-      .layout{ grid-template-columns: 1fr; }
-    }
-    .status{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      min-height:24px;
-      margin-top: 8px;
-    }
+    @media (max-width: 980px){ .layout{ grid-template-columns: 1fr; } }
+
+    /* Estado / spinner */
+    .status{ display:flex; align-items:center; gap:10px; min-height:24px; margin-top:8px; }
     .spinner{
       width:18px; height:18px;
       border:3px solid rgba(255,255,255,.18);
@@ -38,67 +32,145 @@
     .loading .status-text{ opacity:.85; }
     @keyframes spin{ to { transform: rotate(360deg); } }
 
-    /* salida bonita */
+    /* Resultado */
     .kv{
       display:grid;
       grid-template-columns: 130px 1fr;
-      gap: 8px 12px;
-      margin-top: 10px;
+      gap:8px 12px;
+      margin-top:10px;
     }
-    .kv .k{ color: rgba(255,255,255,.68); font-size: 12px; }
-    .kv .v{ color: rgba(255,255,255,.92); font-size: 13px; word-break: break-word; }
+    .kv .k{ color: rgba(255,255,255,.68); font-size:12px; }
+    .kv .v{ color: rgba(255,255,255,.92); font-size:13px; word-break: break-word; }
+
     .pill{
       display:inline-flex;
       align-items:center;
-      padding: 6px 10px;
-      border-radius: 999px;
+      padding:6px 10px;
+      border-radius:999px;
       border: 1px solid rgba(255,255,255,.12);
       background: rgba(255,255,255,.05);
       color: rgba(255,255,255,.85);
-      font-size: 12px;
-      margin: 4px 6px 0 0;
-      text-decoration: none;
+      font-size:12px;
+      margin:4px 6px 0 0;
+      text-decoration:none;
     }
     .pill:hover{ background: rgba(255,255,255,.07); }
-
     .muted{ color: rgba(255,255,255,.68); }
 
-    /* lista recientes */
-    .recent-item{
-      display:flex;
-      flex-direction: column;
-      gap: 2px;
-      padding: 10px 10px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      text-decoration: none;
-    }
-    .recent-item:hover{ background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.16); }
-    .recent-url{
-      color: rgba(255,255,255,.92);
-      font-size: 13px;
-      word-break: break-word;
-    }
-    .recent-meta{
-      font-size: 12px;
-      color: rgba(255,255,255,.62);
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    /* panel de error */
     .error-box{
       border: 1px solid rgba(255,120,120,.25);
       background: rgba(255,80,80,.08);
       color: rgba(255,220,220,.95);
-      padding: 10px 12px;
-      border-radius: 14px;
-      font-size: 13px;
-      margin-top: 10px;
+      padding:10px 12px;
+      border-radius:14px;
+      font-size:13px;
+      margin-top:10px;
       white-space: pre-wrap;
     }
+
+    /* Recientes */
+    .recent-item{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      padding:10px 10px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      text-decoration:none;
+    }
+    .recent-item:hover{
+      background: rgba(255,255,255,.06);
+      border-color: rgba(255,255,255,.16);
+    }
+    .recent-url{ color: rgba(255,255,255,.92); font-size:13px; word-break: break-word; }
+    .recent-meta{ font-size:12px; color: rgba(255,255,255,.62); display:flex; gap:10px; flex-wrap:wrap; }
+
+    /* Chat widget */
+    .rc-chat-launcher{
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 9999;
+      border-radius: 999px;
+      padding: 10px 14px;
+      border: 1px solid rgba(255,255,255,.15);
+      background: rgba(0,0,0,.55);
+      backdrop-filter: blur(10px);
+      color: rgba(255,255,255,.92);
+      cursor: pointer;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      user-select:none;
+    }
+    .rc-chat{
+      position: fixed;
+      right: 18px;
+      bottom: 70px;
+      width: min(420px, calc(100vw - 36px));
+      height: 520px;
+      z-index: 9999;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.15);
+      background: rgba(0,0,0,.55);
+      backdrop-filter: blur(10px);
+      display:none;
+      overflow:hidden;
+    }
+    .rc-chat.open{ display:flex; flex-direction:column; }
+    .rc-chat-header{
+      padding: 10px 12px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      border-bottom: 1px solid rgba(255,255,255,.12);
+      color: rgba(255,255,255,.92);
+    }
+    .rc-chat-body{
+      padding: 10px 12px;
+      flex:1;
+      overflow:auto;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .rc-msg{
+      max-width: 85%;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+    .rc-msg.user{ align-self:flex-end; background: rgba(255,255,255,.08); }
+    .rc-msg.ai{ align-self:flex-start; background: rgba(255,255,255,.04); }
+    .rc-chat-footer{
+      padding: 10px 12px;
+      display:flex;
+      gap:10px;
+      border-top: 1px solid rgba(255,255,255,.12);
+    }
+    .rc-chat-footer input{
+      flex:1;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.25);
+      color: rgba(255,255,255,.92);
+      outline:none;
+    }
+    .rc-chat-footer button{
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.08);
+      color: rgba(255,255,255,.92);
+      cursor:pointer;
+    }
+    .rc-chat-footer button[disabled]{ opacity:.6; cursor:not-allowed; }
   </style>
 </head>
 
@@ -113,10 +185,9 @@
       <div class="nav-links">
         <a href="/user/dashboard">Dashboard</a>
         <a href="/user/analyze">Analizar</a>
-
       </div>
 
-      <form method="POST" action="/logout" style="margin:0;">
+      <form method="get" action="/auth/logout" style="margin:0;">
         <button class="btn ghost" type="submit">Salir</button>
       </form>
     </div>
@@ -138,7 +209,8 @@
               Analizar una URL
             </h1>
             <p class="small" style="margin-top:0;">
-              Bienvenido, <b style="color:rgba(255,255,255,.92)"><%= (user && (user.nombre || user.name || user.email)) || "usuario" %></b>.
+              Bienvenido,
+              <b style="color:rgba(255,255,255,.92)"><%= (user && (user.nombre || user.name || user.email)) || "usuario" %></b>.
               Introduce una web y extrae emails y teléfonos.
             </p>
           </div>
@@ -151,16 +223,16 @@
         <div style="height: 14px;"></div>
 
         <div class="layout">
-          <!-- PANEL PRINCIPAL -->
+          <!-- Panel principal -->
           <div class="card panel">
             <div class="panel-title">
               <strong>Nuevo análisis</strong>
               <span class="badge">POST /user/analyze</span>
             </div>
 
-            <form id="f" autocomplete="off" style="display:flex; gap:10px; flex-wrap:wrap;">
+            <form id="analyzeForm" autocomplete="off" style="display:flex; gap:10px; flex-wrap:wrap;">
               <input
-                id="url"
+                id="urlInput"
                 name="url"
                 type="url"
                 placeholder="https://..."
@@ -168,7 +240,7 @@
                 value="<%= (typeof prefillUrl !== 'undefined' && prefillUrl) ? prefillUrl : '' %>"
                 style="flex: 1; min-width: 260px;"
               />
-              <button id="btn" class="btn primary" type="submit">Analizar</button>
+              <button id="analyzeBtn" class="btn primary" type="submit">Analizar</button>
             </form>
 
             <div id="status" class="status">
@@ -176,27 +248,25 @@
               <span class="status-text muted" id="statusText"></span>
             </div>
 
-            <!-- RESULTADO “BONITO” -->
+            <!-- RESULTADO “BONITO” (resumen) -->
             <div id="resultBox" style="display:none; margin-top: 6px;">
               <div class="kv">
-                <div class="k">Fuente</div><div class="v" id="src"></div>
                 <div class="k">Nombre</div><div class="v" id="name"></div>
                 <div class="k">URL</div><div class="v" id="finalUrl"></div>
-                <div class="k">Emails</div><div class="v" id="emails"></div>
-                <div class="k">Teléfonos</div><div class="v" id="phones"></div>
-                <div class="k">Visitadas</div><div class="v" id="visited"></div>
+                <div class="k">Email</div><div class="v" id="bestEmail"></div>
+                <div class="k">Teléfono</div><div class="v" id="bestPhone"></div>
               </div>
               <div id="errBox" class="error-box" style="display:none;"></div>
             </div>
 
-            <!-- JSON crudo (por si quieres) -->
+            <!-- JSON crudo -->
             <details style="margin-top: 12px;">
               <summary class="small" style="cursor:pointer;">Ver JSON completo</summary>
               <pre id="out" style="margin-top:10px; background: rgba(0,0,0,.18); border:1px solid rgba(255,255,255,.10); border-radius:14px; padding:12px; overflow:auto; color: rgba(255,255,255,.85);"></pre>
             </details>
           </div>
 
-          <!-- SIDEBAR ÚLTIMAS ANALIZADAS -->
+          <!-- Sidebar -->
           <aside class="card panel">
             <div class="panel-title">
               <strong>Últimas analizadas</strong>
@@ -236,115 +306,230 @@
     </footer>
   </main>
 
+  <!-- Chat widget -->
+  <div class="rc-chat" id="rcChat">
+    <div class="rc-chat-header">
+      <div><b>Asistente</b> <span style="opacity:.7; font-size:12px;">RastreaCom</span></div>
+      <div style="display:flex; gap:8px; align-items:center;">
+        <button class="btn btn-sm btn-outline-light" id="rcChatClear" type="button">Limpiar</button>
+        <button class="btn btn-sm btn-outline-light" id="rcChatClose" type="button">Cerrar</button>
+      </div>
+    </div>
+
+    <div class="rc-chat-body" id="rcChatBody">
+      <div class="rc-msg ai">Hola 👋 ¿En qué te ayudo con RastreaCom?</div>
+    </div>
+
+    <div class="rc-chat-footer">
+      <input id="rcChatInput" type="text" placeholder="Escribe tu pregunta…" />
+      <button id="rcChatSend" type="button">Enviar</button>
+    </div>
+  </div>
+
+  <div class="rc-chat-launcher" id="rcChatLauncher">💬 <span>Chat</span></div>
+
   <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
+    (function () {
+      // ---- Contexto global para el chatbot ----
+      window.__RC_CHAT_CONTEXT__ = {
+        page: "analyze",
+        lastAnalysis: null
+      };
 
-    const f = document.getElementById("f");
-    const out = document.getElementById("out");
-    const status = document.getElementById("status");
-    const statusText = document.getElementById("statusText");
-    const btn = document.getElementById("btn");
+      // ---- Helpers DOM ----
+      const $ = (id) => document.getElementById(id);
 
-    const resultBox = document.getElementById("resultBox");
-    const src = document.getElementById("src");
-    const name = document.getElementById("name");
-    const finalUrl = document.getElementById("finalUrl");
-    const emails = document.getElementById("emails");
-    const phones = document.getElementById("phones");
-    const visited = document.getElementById("visited");
-    const errBox = document.getElementById("errBox");
+      // ---- Año footer ----
+      $("year").textContent = new Date().getFullYear();
 
-    function setLoading(isLoading, message = "") {
-      status.classList.toggle("loading", isLoading);
-      statusText.textContent = message;
-      btn.disabled = isLoading;
-    }
+      // ---- UI Analyze ----
+      const analyzeForm = $("analyzeForm");
+      const analyzeBtn = $("analyzeBtn");
+      const out = $("out");
+      const status = $("status");
+      const statusText = $("statusText");
 
-    function renderPills(list) {
-      if (!Array.isArray(list) || list.length === 0) return '<span class="muted">—</span>';
-      return list.map(v => `<span class="pill">${escapeHtml(v)}</span>`).join("");
-    }
+      const resultBox = $("resultBox");
+      const name = $("name");
+      const finalUrl = $("finalUrl");
+      const bestEmail = $("bestEmail");
+      const bestPhone = $("bestPhone");
+      const errBox = $("errBox");
 
-    function escapeHtml(str){
-      return String(str)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
-    }
+      function escapeHtml(str) {
+        return String(str)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
 
-    function showResult(payload){
-      const result = payload && payload.result ? payload.result : null;
-      if (!result) return;
+      function setLoading(isLoading, message = "") {
+        status.classList.toggle("loading", isLoading);
+        statusText.textContent = message;
+        analyzeBtn.disabled = isLoading;
+      }
 
-      resultBox.style.display = "block";
-      src.textContent = payload.source || "—";
-      name.textContent = result.name || "—";
-      finalUrl.textContent = result.url || "—";
+      function pillOrDash(value) {
+        const v = (value ?? "").toString().trim();
+        return v ? `<span class="pill">${escapeHtml(v)}</span>` : '<span class="muted">—</span>';
+      }
 
-      emails.innerHTML = renderPills(result.emails);
-      phones.innerHTML = renderPills(result.phones);
-      visited.innerHTML = renderPills(result.visited);
+      function showResult(payload) {
+        const r = payload && payload.result ? payload.result : null;
+        if (!r) return;
 
-      if (result.error) {
-        errBox.style.display = "block";
-        errBox.textContent = result.error;
-      } else {
+        resultBox.style.display = "block";
+
+        name.textContent = r.name || "—";
+        finalUrl.textContent = r.url || "—";
+
+        const emailMain =
+          (r.bestEmail && String(r.bestEmail).trim())
+            ? String(r.bestEmail).trim()
+            : (Array.isArray(r.emails) && r.emails[0] ? r.emails[0] : "");
+
+        const phoneMain =
+          (r.bestPhone && String(r.bestPhone).trim())
+            ? String(r.bestPhone).trim()
+            : (Array.isArray(r.phones) && r.phones[0] ? r.phones[0] : "");
+
+        bestEmail.innerHTML = pillOrDash(emailMain);
+        bestPhone.innerHTML = pillOrDash(phoneMain);
+
+        if (r.error) {
+          errBox.style.display = "block";
+          errBox.textContent = r.error;
+        } else {
+          errBox.style.display = "none";
+          errBox.textContent = "";
+        }
+      }
+
+      analyzeForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const url = new FormData(analyzeForm).get("url");
+        out.textContent = "";
+        resultBox.style.display = "none";
         errBox.style.display = "none";
         errBox.textContent = "";
-      }
-    }
 
-    f.addEventListener("submit", async (e) => {
-      e.preventDefault();
+        setLoading(true, "Analizando...");
 
-      const url = new FormData(f).get("url");
-      out.textContent = "";
-      resultBox.style.display = "none";
-      errBox.style.display = "none";
-      errBox.textContent = "";
+        try {
+          const res = await fetch("/user/analyze", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+            credentials: "same-origin",
+            body: JSON.stringify({ url })
+          });
 
-      setLoading(true, "Analizando...");
+          const data = await res.json().catch(() => ({}));
 
-      try {
-        const r = await fetch("/user/analyze", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ url })
-        });
+          if (!res.ok) {
+            out.textContent = JSON.stringify(data, null, 2) || "Error al analizar";
+            setLoading(false, "Hubo un error.");
+            return;
+          }
 
-        const data = await r.json().catch(() => ({}));
+          out.textContent = JSON.stringify(data, null, 2);
+          showResult(data);
 
-        if (!r.ok) {
-          out.textContent = JSON.stringify(data, null, 2) || "Error al analizar";
-          setLoading(false, "Hubo un error.");
-          return;
+          // ✅ actualiza contexto del chat con el último análisis
+          window.__RC_CHAT_CONTEXT__.lastAnalysis = data;
+
+          setLoading(false, data.source === "cache" ? "Listo ✅ (cache)" : "Listo ✅");
+        } catch (err) {
+          out.textContent = "Error de red o servidor: " + (err && err.message ? err.message : err);
+          setLoading(false, "Error de red.");
         }
+      });
 
-        out.textContent = JSON.stringify(data, null, 2);
-        showResult(data);
-        setLoading(false, data.source === "cache" ? "Listo ✅ (cache)" : "Listo ✅");
-      } catch (err) {
-        out.textContent = "Error de red o servidor: " + (err && err.message ? err.message : err);
-        setLoading(false, "Error de red.");
+      // ---- Parallax ----
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (!reduceMotion) {
+        const layers = document.querySelectorAll("[data-speed]");
+        const onScroll = () => {
+          const y = window.scrollY || 0;
+          layers.forEach(el => {
+            const speed = parseFloat(el.getAttribute("data-speed")) || 0.2;
+            el.style.transform = `translate3d(0, ${y * speed}px, 0)`;
+          });
+        };
+        onScroll();
+        window.addEventListener("scroll", onScroll, { passive: true });
       }
-    });
 
-    // Parallax suave
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!reduceMotion) {
-      const layers = document.querySelectorAll("[data-speed]");
-      const onScroll = () => {
-        const y = window.scrollY || 0;
-        layers.forEach(el => {
-          const speed = parseFloat(el.getAttribute("data-speed")) || 0.2;
-          el.style.transform = `translate3d(0, ${y * speed}px, 0)`;
-        });
-      };
-      onScroll();
-      window.addEventListener("scroll", onScroll, { passive: true });
-    }
+      // ---- Chat widget ----
+      const chat = $("rcChat");
+      const launcher = $("rcChatLauncher");
+      const closeBtn = $("rcChatClose");
+      const clearBtn = $("rcChatClear");
+      const chatBody = $("rcChatBody");
+      const chatInput = $("rcChatInput");
+      const chatSend = $("rcChatSend");
+
+      function addMsg(role, text) {
+        const div = document.createElement("div");
+        div.className = "rc-msg " + (role === "user" ? "user" : "ai");
+        div.textContent = text;
+        chatBody.appendChild(div);
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }
+
+      function setChatOpen(open) {
+        chat.classList.toggle("open", open);
+      }
+
+      launcher.addEventListener("click", () => setChatOpen(!chat.classList.contains("open")));
+      closeBtn.addEventListener("click", () => setChatOpen(false));
+      clearBtn.addEventListener("click", () => {
+        chatBody.innerHTML = '<div class="rc-msg ai">Hola 👋 ¿En qué te ayudo con RastreaCom?</div>';
+      });
+
+      async function sendChat() {
+        const msg = (chatInput.value || "").trim();
+        if (!msg) return;
+
+        addMsg("user", msg);
+        chatInput.value = "";
+        chatSend.disabled = true;
+
+        const context = window.__RC_CHAT_CONTEXT__ || { page: "analyze", lastAnalysis: null };
+
+        try {
+          const res = await fetch("/user/chat", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+            credentials: "same-origin",
+            body: JSON.stringify({ message: msg, context })
+          });
+
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok) throw new Error(data.error || "Error en chat");
+
+          addMsg("ai", data.answer || "—");
+        } catch (e) {
+          addMsg("ai", "⚠️ " + (e && e.message ? e.message : String(e)));
+        } finally {
+          chatSend.disabled = false;
+          chatInput.focus();
+        }
+      }
+
+      chatSend.addEventListener("click", sendChat);
+      chatInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") sendChat();
+      });
+    })();
   </script>
 </body>
 </html>

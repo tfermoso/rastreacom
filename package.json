@@ -15,6 +15,7 @@
     "express": "^4.19.2",
     "express-session": "^1.19.0",
     "libphonenumber-js": "^1.12.38",
-    "mongoose": "^8.6.0"
+    "mongoose": "^8.6.0",
+    "openai": "^6.25.0"
   }
 }
